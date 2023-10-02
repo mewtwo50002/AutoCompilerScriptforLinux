@@ -26,6 +26,8 @@ int main()
     string filename1, filename2;
     int firstTime = 0;
     string logName;
+    const char * logs = "logs";
+    const char * back = "..";
 
     system("clear");
     system("clear");
@@ -76,9 +78,17 @@ int main()
     
     while (true)
     {
-        system(compile);
-        
-        logName = "log_" + filename1 + ".txt";
+        //system(compile);
+            if (chdir(logs) != 0)
+        {
+            cout << "creating logs folder" << endl;
+            system("mkdir logs");
+        }else
+        {
+            chdir(back);
+        }
+
+        logName = "./logs/log_" + filename1 + ".txt";
         fstream myFile1;
         
         if (firstTime == 0)
@@ -86,6 +96,8 @@ int main()
             myFile1.open(logName,ios::out);
             if (myFile1.is_open())
             {
+                system(compile);
+                myFile1<<system(compile);
                 cout<<"First compiled at "<< getTimeStr()<<endl;
                 myFile1<<"compiled at "<< getTimeStr()<<endl;
                 myFile1.close();
@@ -96,6 +108,8 @@ int main()
             myFile1.open(logName, ios::app);
             if (myFile1.is_open())
             {
+                system(compile);
+                myFile1<<system(compile);
                 cout<<"compiled at "<< getTimeStr()<<endl;
                 myFile1<<"compiled at "<< getTimeStr()<<endl;
                 myFile1.close();
