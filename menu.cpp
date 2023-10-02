@@ -13,7 +13,14 @@ using namespace std::chrono;
 std::string getTimeStr(){
     std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string s(30, '\0');
-    std::strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    std::strftime(&s[0], s.size(), "%Y-%m-%d_%H:%M:%S", std::localtime(&now));
+    return s;
+}
+
+string getTime(){
+    time_t now = system_clock::to_time_t(system_clock::now());
+    string s(30, '\0');
+    strftime(&s[0], s.size(), "%Y_%m_%d_%H_%M_%S", localtime(&now));
     return s;
 }
 
@@ -28,6 +35,7 @@ int main()
     string logName;
     const char * logs = "logs";
     const char * back = "..";
+    auto timeLog = getTime();
 
     system("clear");
     system("clear");
@@ -88,7 +96,7 @@ int main()
             chdir(back);
         }
 
-        logName = "./logs/log_" + filename1 + ".txt";
+        logName = "./logs/log_" + filename1 + timeLog + ".txt";
         fstream myFile1;
         
         if (firstTime == 0)
@@ -96,8 +104,8 @@ int main()
             myFile1.open(logName,ios::out);
             if (myFile1.is_open())
             {
-                system(compile);
-                myFile1<<system(compile);
+                myFile1<<"Error codes displyed here if there are any: ";
+                myFile1<<system(compile)<<endl;
                 cout<<"First compiled at "<< getTimeStr()<<endl;
                 myFile1<<"compiled at "<< getTimeStr()<<endl;
                 myFile1.close();
@@ -108,8 +116,8 @@ int main()
             myFile1.open(logName, ios::app);
             if (myFile1.is_open())
             {
-                system(compile);
-                myFile1<<system(compile);
+                myFile1<<"Error codes displyed here if there are any: ";
+                myFile1<<system(compile)<<endl;
                 cout<<"compiled at "<< getTimeStr()<<endl;
                 myFile1<<"compiled at "<< getTimeStr()<<endl;
                 myFile1.close();
