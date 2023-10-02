@@ -21,10 +21,10 @@ Interactive: Provides a user-friendly command-line interface for input and inter
 
 How to Use:
 
-Run the program and select 'A' or 'L' to choose between Assignment and Lab directories.
-Enter the assignment or lab number.
+Run the program and select Whatever you edited the file first letters to be to choose between files.
+Enter the child folder number.
 Specify the filename (without the .cpp extension) you want to compile.
 The program will compile the file, create or update log files, and display compilation timestamps.
 It will wait for 5 seconds and then recompile, continuously updating the log.
-This repository contains the source code for the FolderSwitcher-and-Compiler program. Feel free to explore, use, and customize it to suit your needs for managing assignments or lab work efficiently.
+This repository contains the source code for the AutoCompilerforLinux. Feel free to explore, use, and customize it to suit your needs for managing work efficiently.
 
