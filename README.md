@@ -2,6 +2,11 @@
 A C++ utility for directory navigation, C++ file compilation, and automated logging. Ideal for managing assignments and labs with an intuitive interface.
 This C++ program, FolderSwitcher-and-Compiler, is a versatile utility designed to assist users in navigating and compiling files within different directories, commonly used in educational settings, such as assignments and lab work. It combines file management, directory navigation, and compilation tasks into a single interactive tool.
 
+IMPORTANT 
+Files must be in a specific structure to work
+example: cs120/Assignment/assignment1/all the files in the assignment1 folder
+The reason for this is it was built for a file directory that I use.
+
 Key Features:
 
 Directory Navigation: Easily switch between different directories representing assignments and labs by specifying 'A' or 'L' when prompted.
