@@ -32,7 +32,10 @@ int main()
     string third = "Labs";
     string secondChild = "assignment";
     string thirdChild = "lab";
-    
+    string secondCapital = "A";//First letter of the second variable Uppercase
+    string secondLower = "a"; //First letter of the second variable Lowercase
+    string thirdCapital = "L"; //First letter of the third variable Uppercase
+    string thirdLower = "l"; // First letter of the third variable Lowercase
     //Dont touch the rest
     string folder;
     string former = "cs120/";
@@ -47,16 +50,16 @@ int main()
 
     system("clear");
     system("clear");
-    cout<<"What folder would you like to go to(A/L): ";
+    cout<<"What folder would you like to go to ("<<secondCapital <<"\\" <<thirdCapital<<"): ";
     cin>>folder;
 
     do
     {
-        if (folder == "a" || folder == "A")
+        if (folder ==  secondCapital|| folder == secondLower)
         {
             former = former + second +"/";
             retry = false;
-        }else if(folder == "l" || folder == "L")
+        }else if(folder == thirdCapital || folder == thirdLower)
         {
             former = former + third + "/";
             retry = false;
@@ -69,7 +72,7 @@ int main()
     cout<<"what is the lab or assignment number?: ";
     cin>>number;
 
-    if (folder == "a" || folder == "A")
+    if (folder == secondCapital || folder == secondLower)
     {
         former = former + (secondChild + to_string(number));
     }else
