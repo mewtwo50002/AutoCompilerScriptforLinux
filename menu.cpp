@@ -26,6 +26,14 @@ string getTime(){
 
 int main()
 {
+    //Edit these variables with your file name
+    string base = "cs120";
+    string second = "Assignment";
+    string third = "Labs";
+    string secondChild = "assignment";
+    string thirdChild = "lab";
+    
+    //Dont touch the rest
     string folder;
     string former = "cs120/";
     bool retry = true;
@@ -46,11 +54,11 @@ int main()
     {
         if (folder == "a" || folder == "A")
         {
-            former = former + "Assignment/";
+            former = former + second +"/";
             retry = false;
         }else if(folder == "l" || folder == "L")
         {
-            former = former + "Labs/";
+            former = former + third + "/";
             retry = false;
         }else
         {
@@ -63,10 +71,10 @@ int main()
 
     if (folder == "a" || folder == "A")
     {
-        former = former + ("assignment" + to_string(number));
+        former = former + (secondChild + to_string(number));
     }else
     {
-        former = former + ("lab" + to_string(number));
+        former = former + (thirdChild + to_string(number));
     }
     
     const char * consoleCommand = former.c_str();
