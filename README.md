@@ -4,7 +4,7 @@ This C++ program, FolderSwitcher-and-Compiler, is a versatile utility designed t
 
 IMPORTANT 
 Files must be in a specific structure to work
-example: cs120/Assignment/assignment1/all the files in the assignment1 folder
+Example: cs120/Assignment/assignment1/(all the files in the assignment1 folder)
 The reason for this is it was built for a file directory that I use.
 
 Key Features:
