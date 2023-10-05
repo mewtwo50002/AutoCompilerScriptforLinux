@@ -6,6 +6,7 @@ IMPORTANT
 Files must be in a specific structure to work
 
 Example: cs120/Assignment/assignment1/(all the files in the assignment1 folder)
+
 The reason for this is it was built for a file directory that I use.
 
 Key Features:
