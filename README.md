@@ -21,7 +21,7 @@ Interactive: Provides a user-friendly command-line interface for input and inter
 
 How to Use:
 
-Run the program and select Whatever you edited the file first letters to be to choose between files.
+Run the program and select whatever you edited the file first letters to be to choose between files.
 Enter the child folder number.
 Specify the filename (without the .cpp extension) you want to compile.
 The program will compile the file, create or update log files, and display compilation timestamps.
