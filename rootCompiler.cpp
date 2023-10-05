@@ -5,137 +5,193 @@
 #include <fstream>
 #include <string>
 #include <unistd.h>
+#include <ctype.h>
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
 
-//Edit these variables with your file name
-string base = "cs120";
-string second = "Assignment";
-string third = "Labs";
-string secondChild = "assignment";
-string thirdChild = "lab";
-string secondCapital = "A";//First letter of the second variable Uppercase
-string secondLower = "a"; //First letter of the second variable Lowercase
-string thirdCapital = "L"; //First letter of the third variable Uppercase
-string thirdLower = "l"; // First letter of the third variable Lowercase
 
-//Add othervariables bellow
+
+
+
+
+//
+class childFolder
+{
+    public:
+        string name;
+    };
+class Folder
+    {
+        public:
+            string name;
+            char firstinitial; 
+    };
+
+Folder baseFolder;
+Folder assignmentFolder;
+Folder labsFolder;
+childFolder assignmentChild;
+childFolder labsChild;
+
+
+//Change how long it will wait befor compiling again
+int timer = 5;
+
 
 /* Templates
-
-------------------------
-variables
-------------------------
-string nextName = "";
-string nextCapital = "";
-string nextLower = "";
 ------------------------
 child folders
 ------------------------
-if (folder ==  secondCapital|| folder == secondLower)
+if (folderInput ==  ::toupper(class.firstinitial)|| folderInput == class.firstinitial)
     {
-        former = former + second +"/";
+        former = former + class.name +"/";
         retry = false;
-    }else if(folder == thirdCapital || folder == thirdLower)
-    {
-        former = former + whatever you want to call the next folders + "/";
-        retry = false;
-    }else
-    {
-        retry = true;
     }
 ------------------------
 */
 
+
+
+
+//Prototype Variables
+string getTimeStr();
+string getTime();
+
 //Dont touch the rest
-string folder;
-string former = "cs120/";
+string folderI;
+string former = baseFolder.name + "/";
 string filename1, filename2;
 string logName;
 bool retry = true;
 int number;
 int firstTime = 0;
-const char * logs = "logs";
-const char * back = "..";
 auto timeLog = getTime();
-
-//Prototype Variables
-string getTimeStr();
-string getTime();
-void start();
-void child1();
-void child2();
-void logFolder();
-int errorChecker();
+const char * back = "..";
+const char * logs = "logs";
+const char * folderChange;
 
 //variable definitions
 int main()
 {
-    start();
-    
-    child1();
+    //add classes declerations
+    baseFolder.name = "cs120";
+    baseFolder.firstinitial = 'c';
 
+    
+    assignmentFolder.name = "Assignment";
+    assignmentFolder.firstinitial = 'a';
+
+    
+    labsFolder.name = "Labs";
+    labsFolder.firstinitial = 'l';
+
+    
+    assignmentChild.name = "assignment";
+    labsChild.name = "lab";
+
+    string former = baseFolder.name + "/";
+    
+    system("clear");
+    system("clear");
+    cout<<"What folder would you like to go to ("<< assignmentFolder.firstinitial <<"\\" << labsFolder.firstinitial <<"): ";
+    cin>>folderI;
+    
+    char folderInput = folderI[0];
+    
+    
+    
+    do
+    {
+        if (folderInput ==  toupper(assignmentFolder.firstinitial)|| folderInput == assignmentFolder.firstinitial)
+        {
+            former = former + assignmentFolder.name +"/";
+            retry = false;
+        }else if(folderInput == toupper(labsFolder.firstinitial) || folderInput == labsFolder.firstinitial)
+        {
+            former = former + labsFolder.name + "/";
+            retry = false;
+        }else //Add more if statements for secondary folders
+        {
+            retry = true;
+        }
+    } while (retry == true);
+
+    cout<<endl;
+    cout<<endl;
+    cout<<endl;
     cout<<"what is the lab or assignment number?: ";
     cin>>number;
-    
-    child2();
+    cout<<endl;
+    cout<<endl;
+    cout<<endl;
 
-    errorChecker();
+    //change this function below to add more else-if statments to make to add more folders and letters
+    if (folderInput ==  toupper(assignmentFolder.firstinitial)|| folderInput == assignmentFolder.firstinitial)
+    {
+        former = former + (assignmentChild.name + to_string(number));
+
+    }else if (folderInput == toupper(labsFolder.firstinitial)|| folderInput == labsFolder.firstinitial)
+    {
+        former = former + (labsChild.name + to_string(number));
+    }
+    folderChange = former.c_str();
+    if (chdir(folderChange) != 0)
+    {
+        cerr << "Error changing directory" << endl;
+        return 1; // Exit with an error code
+    }
 
     system("ls");
     cout<<"Whats the name of the file you want to compile without the .cpp: ";
     cin>>filename1;
 
     filename2 = filename1 + ".cpp";
-    string command = "g++ " + filename2 + " -o " + filename1;
-    const char * compile = command.c_str();
+    string command = "g++ " + filename2 + " -o " + filename1 + ".out";
+    const char *compile = command.c_str();
     
     while (true)
     {
-        logFolder();
+        if (chdir(logs) != 0)
+    {
+        cout << "creating logs folder" << endl;
+        system("mkdir logs");
+    }else
+    {
+        chdir(back);
+    }
 
-        logName = "./logs/log_" + filename1 + timeLog + ".txt";
-        fstream myFile1;
-        
-        if (firstTime == 0)
+    logName = "./logs/log_" + filename1 + "_" + timeLog + ".txt";
+    fstream logger;
+    if (firstTime == 0)
         {
-            myFile1.open(logName,ios::out);
-            if (myFile1.is_open())
+            logger.open(logName,ios::out);
+            if (logger.is_open())
             {
-                myFile1<<"Error codes displyed here if there are any: ";
-                myFile1<<system(compile)<<endl;
-                cout<<"First compiled at "<< getTimeStr()<<endl;
-                myFile1<<"compiled at "<< getTimeStr()<<endl;
-                myFile1.close();
+                logger<<"Error codes displyed here if there are any: ";
+                logger<<system(compile)<<endl;
+                cout<<"First atempted compile at "<< getTimeStr()<<endl;
+                logger<<"atecompiled at "<< getTimeStr()<<endl;
+                logger.close();
             }
             firstTime++;
-        }else
+    }else
         {
-            myFile1.open(logName, ios::app);
-            if (myFile1.is_open())
+            logger.open(logName, ios::app);
+            if (logger.is_open())
             {
-                myFile1<<"Error codes displyed here if there are any: ";
-                myFile1<<system(compile)<<endl;
+                logger<<"Error codes displyed here if there are any: ";
+                logger<<system(compile)<<endl;
                 cout<<"compiled at "<< getTimeStr()<<endl;
-                myFile1<<"compiled at "<< getTimeStr()<<endl;
-                myFile1.close();
+                logger<<"compiled at "<< getTimeStr()<<endl;
+                logger.close();
             }
         }
-        sleep_for(seconds(5));
+    sleep_for(seconds(timer));
     }
     
     
 
-}
-int errorChecker()
-{
-    const char * consoleCommand = former.c_str();
-    if (chdir(consoleCommand) != 0)
-    {
-        cerr << "Error changing directory" << endl;
-        return 1; // Exit with an error code
-    }
 }
 string getTimeStr(){
     time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
@@ -148,52 +204,4 @@ string getTime(){
     string s(30, '\0');
     strftime(&s[0], s.size(), "%Y_%m_%d_%H_%M_%S", localtime(&now));
     return s;
-}
-void start()
-{
-    system("clear");
-    system("clear");
-    cout<<"What folder would you like to go to ("<<secondCapital <<"\\" <<thirdCapital<<"): ";
-    cin>>folder;
-}
-void child1()
-{
-    do
-    {
-        if (folder ==  secondCapital|| folder == secondLower)
-        {
-            former = former + second +"/";
-            retry = false;
-        }else if(folder == thirdCapital || folder == thirdLower)
-        {
-            former = former + third + "/";
-            retry = false;
-        }else
-        {
-            retry = true;
-        }
-    } while (retry == true);
-}
-//change this function below to look like child1, and to add more use else-if statments to make to add more folders and letters
-void child2()
-{
-    if (folder == secondCapital || folder == secondLower)
-    {
-        former = former + (secondChild + to_string(number));
-    }else
-    {
-        former = former + (thirdChild + to_string(number));
-    }
-}
-//------------------------
-void logFolder()
-{
-    if (chdir(logs) != 0)
-    {
-        cout << "creating logs folder" << endl;
-        system("mkdir logs");
-    }else
-    {
-        chdir(back);
-    }
 }
