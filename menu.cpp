@@ -5,7 +5,6 @@
 #include <fstream>
 #include <string>
 #include <unistd.h>
-
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
@@ -16,20 +15,47 @@ string second = "Assignment";
 string third = "Labs";
 string secondChild = "assignment";
 string thirdChild = "lab";
-
 string secondCapital = "A";//First letter of the second variable Uppercase
 string secondLower = "a"; //First letter of the second variable Lowercase
 string thirdCapital = "L"; //First letter of the third variable Uppercase
 string thirdLower = "l"; // First letter of the third variable Lowercase
 
+//Add othervariables bellow
+
+/* Templates
+
+------------------------
+variables
+------------------------
+string nextName = "";
+string nextCapital = "";
+string nextLower = "";
+------------------------
+child folders
+------------------------
+if (folder ==  secondCapital|| folder == secondLower)
+    {
+        former = former + second +"/";
+        retry = false;
+    }else if(folder == thirdCapital || folder == thirdLower)
+    {
+        former = former + whatever you want to call the next folders + "/";
+        retry = false;
+    }else
+    {
+        retry = true;
+    }
+------------------------
+*/
+
 //Dont touch the rest
 string folder;
 string former = "cs120/";
+string filename1, filename2;
+string logName;
 bool retry = true;
 int number;
-string filename1, filename2;
 int firstTime = 0;
-string logName;
 const char * logs = "logs";
 const char * back = "..";
 auto timeLog = getTime();
@@ -40,9 +66,8 @@ string getTime();
 void start();
 void child1();
 void child2();
-int errorChecker();
 void logFolder();
-
+int errorChecker();
 
 //variable definitions
 int main()
@@ -103,21 +128,27 @@ int main()
     
 
 }
-
+int errorChecker()
+{
+    const char * consoleCommand = former.c_str();
+    if (chdir(consoleCommand) != 0)
+    {
+        cerr << "Error changing directory" << endl;
+        return 1; // Exit with an error code
+    }
+}
 string getTimeStr(){
     time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
     string s(30, '\0');
     strftime(&s[0], s.size(), "%Y-%m-%d_%H:%M:%S", localtime(&now));
     return s;
 }
-
 string getTime(){
     time_t now = system_clock::to_time_t(system_clock::now());
     string s(30, '\0');
     strftime(&s[0], s.size(), "%Y_%m_%d_%H_%M_%S", localtime(&now));
     return s;
 }
-
 void start()
 {
     system("clear");
@@ -125,7 +156,6 @@ void start()
     cout<<"What folder would you like to go to ("<<secondCapital <<"\\" <<thirdCapital<<"): ";
     cin>>folder;
 }
-
 void child1()
 {
     do
@@ -144,7 +174,7 @@ void child1()
         }
     } while (retry == true);
 }
-
+//change this function below to look like child1, and to add more use else-if statments to make to add more folders and letters
 void child2()
 {
     if (folder == secondCapital || folder == secondLower)
@@ -155,17 +185,7 @@ void child2()
         former = former + (thirdChild + to_string(number));
     }
 }
-
-int errorChecker()
-{
-    const char * consoleCommand = former.c_str();
-    if (chdir(consoleCommand) != 0)
-    {
-        cerr << "Error changing directory" << endl;
-        return 1; // Exit with an error code
-    }
-}
-
+//------------------------
 void logFolder()
 {
     if (chdir(logs) != 0)
@@ -177,5 +197,3 @@ void logFolder()
         chdir(back);
     }
 }
-
-
