@@ -16,7 +16,7 @@ Directory Navigation: Easily switch between different directories representing a
 
 File Compilation: Compile C++ source files (.cpp) into executables with the GCC (GNU Compiler Collection) compiler.
 
-Logging: Automatically create and maintain log files (log_filename.txt) to record compilation timestamps.
+Logging: Automatically create and maintain log files (log_filename_time code was launched at.txt) to record compilation timestamps.
 
 Timestamps: Display timestamps for compilation events, including the initial compilation.
 
