@@ -195,8 +195,7 @@ int compiler()
                 }
                 
                 
-                cout << "First atempted compile at " << getTimeStr() << endl;
-                logger << "atecompiled at " << getTimeStr() << endl;
+                logger << "First attempted compile at " << getTimeStr() << endl;
                 logger.close();
             }
             firstTime++;
@@ -208,8 +207,8 @@ int compiler()
             {
                 logger << "Error codes displyed here if there are any: ";
                 logger << system(compile) << endl;
-                cout << "compiled at " << getTimeStr() << endl;
-                logger << "compiled at " << getTimeStr() << endl;
+                cout << "Attempted compiled at " << getTimeStr() << endl;
+                logger << "Attempted compiled at " << getTimeStr() << endl;
                 logger.close();
             }
         }
