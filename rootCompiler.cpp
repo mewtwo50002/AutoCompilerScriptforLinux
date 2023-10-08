@@ -29,8 +29,10 @@ public:
 Folder baseFolder;
 Folder assignmentFolder;
 Folder labsFolder;
+Folder examsFolder;
 childFolder assignmentChild;
 childFolder labsChild;
+childFolder examsChild;
 
 // Prototype Variables
 string getTimeStr();
@@ -41,7 +43,7 @@ int childGraber();
 int compiler();
 
 // Change how long it will wait befor compiling again
-int timer = 5;
+int timer = 2;
 // add more secondary files here
 
 // add classes declerations
@@ -72,11 +74,15 @@ int main()
     labsFolder.name = "Labs";
     labsFolder.firstinitial = 'l';
 
+    examsFolder.name = "Exams";
+    examsFolder.firstinitial = 'e';
+
     assignmentChild.name = "assignment";
     labsChild.name = "lab";
+    examsChild.name = "exam";
 
     former = baseFolder.name + "/";
-    
+
     dirChanger();
     secondaryGraber();
 
@@ -103,7 +109,7 @@ void dirChanger()
 
     system("clear");
     system("clear");
-    cout << "What folder would you like to go to (" << assignmentFolder.firstinitial << "\\" << labsFolder.firstinitial << "): ";
+    cout << "What folder would you like to go to (" << assignmentFolder.firstinitial << "\\" << labsFolder.firstinitial << "\\" << examsFolder.firstinitial << "): ";
     cin >> folderI;
 
     folderInput = folderI[0];
@@ -122,6 +128,11 @@ void secondaryGraber()
             former = former + labsFolder.name + "/";
             retry = false;
         }
+        else if (folderInput == toupper(examsFolder.firstinitial) || folderInput == examsFolder.firstinitial)
+        {
+            former = former + examsFolder.name + "/";
+            retry = false;
+        }
         else // Add more if statements for secondary folders
         {
             retry = true;
@@ -133,7 +144,7 @@ int childGraber()
     cout << endl;
     cout << endl;
     cout << endl;
-    cout << "what is the lab or assignment number?: ";
+    cout << "what is the lab, assignment, or exam number?: ";
     cin >> number;
     cout << endl;
     cout << endl;
@@ -148,8 +159,13 @@ int childGraber()
     {
         former = former + (labsChild.name + to_string(number));
     }
+    else if (folderInput == toupper(examsFolder.firstinitial) || folderInput == examsFolder.firstinitial)
+    {
+        former = former + (examsChild.name + to_string(number));
+    }
+
     folderChange = former.c_str();
-    cout<<former<<endl;
+    cout << former << endl;
     if (chdir(folderChange) != 0)
     {
         cerr << "Error changing directory" << endl;
@@ -159,11 +175,11 @@ int childGraber()
 int compiler()
 {
     system("ls");
-    cout << "Whats the name of the file you want to compile without the .cpp: ";
+    cout << "What's the name of the file you want to compile without the .cpp: ";
     cin >> filename1;
-    //----------------------------------------------
+
     filename2 = filename1 + ".cpp";
-    string command = "g++ " + filename2 + " -o " + filename1 + ".out";
+    string command = "g++ " + filename2 + " -o " + filename1 + ".out 2>&1"; // Redirect stderr to stdout
     const char *compile = command.c_str();
 
     while (true)
@@ -177,6 +193,24 @@ int compiler()
         {
             chdir(back);
         }
+        FILE *pipe = popen(compile, "r");
+        if (!pipe)
+        {
+            std::cerr << "Error opening pipe." << std::endl;
+            return 1;
+        }
+
+        char buffer[128];
+        std::string result = "";
+
+        // Read the output of the command and store it in a string
+        while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
+        {
+            result += buffer;
+        }
+
+        // Close the pipe
+        pclose(pipe);
 
         logName = ("./logs/log_" + filename1 + "_" + timeLog + ".txt").c_str();
         fstream logger;
@@ -185,16 +219,18 @@ int compiler()
             logger.open(logName, ios::out);
             if (logger.is_open())
             {
-                if (system(compile) != 0)
+                if (!result.empty())
                 {
-                    logger << "Error code detected..." << endl;
-                    logger << "File is not a cpp  file or is not accessible" << endl;
-                    logger<< "Terminating code" << endl;
-                    logger << system(compile) << endl;
-                    return (1);
+                    logger << "First attempted compile at " << getTimeStr() << endl;
+                    cout << "Error code detected..." << endl;
+                    cout << "File is not a cpp file, is not accessible, or has an error to begin with..." << endl;
+                    cout << "Logging Errors..."<<endl;
+                    cout << "Check Log to see errors"<<endl;
+                    cout << "Terminating code" << endl;
+                    logger << result << endl;
+                    return 1;
                 }
-                
-                
+
                 logger << "First attempted compile at " << getTimeStr() << endl;
                 logger.close();
             }
@@ -205,8 +241,13 @@ int compiler()
             logger.open(logName, ios::app);
             if (logger.is_open())
             {
-                logger << "Error codes displyed here if there are any: ";
-                logger << system(compile) << endl;
+                if (!result.empty())
+                {
+                    cout << "error detected..." << endl;
+                    cout << "Logging error" << endl;
+                    logger << "Error displayed here if there are any: "<<endl;
+                    logger << result << endl;
+                }
                 cout << "Attempted compiled at " << getTimeStr() << endl;
                 logger << "Attempted compiled at " << getTimeStr() << endl;
                 logger.close();
