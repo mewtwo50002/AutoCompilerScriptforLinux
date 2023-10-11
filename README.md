@@ -1,4 +1,4 @@
-# AutoCompilerforLinux
+# AutoCompilerScriptforLinux
 A C++ utility for  C++ file compilation and automated logging. Ideal for managing assignments and labs with an intuitive interface.
 This C++ program, FolderSwitcher-and-Compiler, is a versatile utility designed to assist users in navigating and compiling files within different directories, commonly used in educational settings, such as assignments and lab work. It combines file management, directory navigation, and compilation tasks into a single interactive tool.
 
