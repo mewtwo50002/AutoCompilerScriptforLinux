@@ -1,3 +1,4 @@
+#include "basics.h"
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -23,7 +24,6 @@ class Folder
 {
 public:
     string name;
-    char firstinitial;
 };
 
 Folder baseFolder;
@@ -49,44 +49,45 @@ int timer = 2;
 // add classes declerations
 
 // variable definitions
+vector<string> menuChoices;
 string folderI;
 string former = baseFolder.name + "/";
 string filename1, filename2;
 string logName;
 bool retry = true;
-int number;
+string number;
 int firstTime = 0;
 auto timeLog = getTime();
 const char *back = "..";
 const char *logs = "logs";
 const char *compile;
 const char *folderChange;
-char folderInput;
+int folderInput;
 
 int main()
 {
     baseFolder.name = "cs120";
-    baseFolder.firstinitial = 'c';
 
     assignmentFolder.name = "Assignment";
-    assignmentFolder.firstinitial = 'a';
+    menuChoices.push_back(assignmentFolder.name);
 
     labsFolder.name = "Labs";
-    labsFolder.firstinitial = 'l';
+    menuChoices.push_back(labsFolder.name);
 
     examsFolder.name = "Exams";
-    examsFolder.firstinitial = 'e';
+    menuChoices.push_back(examsFolder.name);
 
     assignmentChild.name = "assignment";
     labsChild.name = "lab";
     examsChild.name = "exam";
 
     former = baseFolder.name + "/";
-
     dirChanger();
-    secondaryGraber();
-
-    childGraber();
+    if (childGraber() == 1)
+    {
+        return 1;
+    }
+    
     compiler();
 }
 string getTimeStr()
@@ -103,39 +104,35 @@ string getTime()
     strftime(&s[0], s.size(), "%Y-%m-%d-%H-%M-%S", localtime(&now));
     return s;
 }
+
 void dirChanger()
 {
-    string former = baseFolder.name + "/";
-
+    bool retry = false;
     system("clear");
     system("clear");
-    cout << "What folder would you like to go to (" << assignmentFolder.firstinitial << "\\" << labsFolder.firstinitial << "\\" << examsFolder.firstinitial << "): ";
-    cin >> folderI;
-
-    folderInput = folderI[0];
-}
-void secondaryGraber()
-{
     do
     {
-        if (folderInput == toupper(assignmentFolder.firstinitial) || folderInput == assignmentFolder.firstinitial)
+        folderInput = menuCreator(menuChoices, "What Folder would you like to go to?:");
+        switch (folderInput)
         {
+        case 1:
             former = former + assignmentFolder.name + "/";
             retry = false;
-        }
-        else if (folderInput == toupper(labsFolder.firstinitial) || folderInput == labsFolder.firstinitial)
-        {
+            break;
+        case 2:
             former = former + labsFolder.name + "/";
             retry = false;
-        }
-        else if (folderInput == toupper(examsFolder.firstinitial) || folderInput == examsFolder.firstinitial)
-        {
+            break;
+        case 3:
             former = former + examsFolder.name + "/";
             retry = false;
-        }
-        else // Add more if statements for secondary folders
-        {
+            break;
+        case 0:
+
+            cout << "That is not a choice try again...";
+            wait(5);
             retry = true;
+            break;
         }
     } while (retry == true);
 }
@@ -151,19 +148,18 @@ int childGraber()
     cout << endl;
     //----------------------------------------------
     // change this function below to add more else-if statments to make to add more folders and letters
-    if (folderInput == toupper(assignmentFolder.firstinitial) || folderInput == assignmentFolder.firstinitial)
-    {
-        former = former + (assignmentChild.name + to_string(number));
-    }
-    else if (folderInput == toupper(labsFolder.firstinitial) || folderInput == labsFolder.firstinitial)
-    {
-        former = former + (labsChild.name + to_string(number));
-    }
-    else if (folderInput == toupper(examsFolder.firstinitial) || folderInput == examsFolder.firstinitial)
-    {
-        former = former + (examsChild.name + to_string(number));
-    }
 
+    if (folderInput == 1)
+    {
+        former = former + assignmentChild.name + number +"/";
+    }else if(folderInput == 2)
+    {
+        former = former + labsChild.name + number +"/";
+    }else if (folderInput == 3)
+    {
+        former = former + assignmentChild.name + number + "/";
+    }
+    
     folderChange = former.c_str();
     cout << former << endl;
     if (chdir(folderChange) != 0)
@@ -172,6 +168,7 @@ int childGraber()
         return 1; // Exit with an error code
     }
 }
+
 int compiler()
 {
     system("ls");
@@ -224,8 +221,8 @@ int compiler()
                     logger << "First attempted compile at " << getTimeStr() << endl;
                     cout << "Error code detected..." << endl;
                     cout << "File is not a cpp file, is not accessible, or has an error to begin with..." << endl;
-                    cout << "Logging Errors..."<<endl;
-                    cout << "Check Log to see errors"<<endl;
+                    cout << "Logging Errors..." << endl;
+                    cout << "Check Log to see errors" << endl;
                     cout << "Terminating code" << endl;
                     logger << result << endl;
                     return 1;
@@ -245,7 +242,7 @@ int compiler()
                 {
                     cout << "error detected..." << endl;
                     cout << "Logging error" << endl;
-                    logger << "Error displayed here if there are any: "<<endl;
+                    logger << "Error displayed here if there are any: " << endl;
                     logger << result << endl;
                 }
                 cout << "Attempted compiled at " << getTimeStr() << endl;
